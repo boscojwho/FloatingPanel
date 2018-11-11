@@ -86,7 +86,7 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
 
     /// The current position of the floating panel controller's contents.
     public var position: FloatingPanelPosition {
-        return floatingPanel.state
+        return floatingPanel.layoutState.state
     }
 
     /// The content insets of the tracking scroll view derived from the safe area of the parent view
@@ -101,8 +101,8 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
 
     /// A Boolean value that determines whether the removal interaction is enabled.
     public var isRemovalInteractionEnabled: Bool {
-        set { floatingPanel.isRemovalInteractionEnabled = newValue }
-        get { return floatingPanel.isRemovalInteractionEnabled }
+        set { floatingPanel.layoutState.isRemovalInteractionEnabled = newValue }
+        get { return floatingPanel.layoutState.isRemovalInteractionEnabled }
     }
 
     /// The view controller responsible for the content portion of the floating panel.
@@ -152,7 +152,7 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
         guard let parent = parent else { fatalError() }
 
         floatingPanel.layoutAdapter.prepareLayout(toParent: parent)
-        floatingPanel.layoutAdapter.activateLayout(of: floatingPanel.state)
+        floatingPanel.layoutAdapter.activateLayout(of: floatingPanel.layoutState.state)
     }
 
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
