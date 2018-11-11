@@ -145,7 +145,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         self.layoutAdapter.activateLayout(of: target)
     }
 
-    private func getBackdropAlpha(with translation: CGPoint) -> CGFloat {
+    func getBackdropAlpha(with translation: CGPoint) -> CGFloat {
         let currentY = getCurrentY(from: initialFrame, with: translation)
 
         let next = directionalPosition(with: translation)
@@ -340,7 +340,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         startAnimation(to: targetPosition, at: distance, with: velocity)
     }
 
-    private func startRemovalAnimation(with translation: CGPoint, velocity: CGPoint, distance: CGFloat) -> Bool {
+    func startRemovalAnimation(with translation: CGPoint, velocity: CGPoint, distance: CGFloat) -> Bool {
         let posY = layoutAdapter.positionY(for: state)
         let currentY = getCurrentY(from: initialFrame, with: translation)
         let safeAreaBottomY = layoutAdapter.safeAreaBottomY
@@ -380,7 +380,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         interactionInProgress = true
     }
 
-    private func endInteraction(for targetPosition: FloatingPanelPosition) {
+    func endInteraction(for targetPosition: FloatingPanelPosition) {
         log.debug("endInteraction for \(targetPosition)")
         if targetPosition != .full {
             lockScrollView()
@@ -388,7 +388,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         interactionInProgress = false
     }
 
-    private func getCurrentY(from rect: CGRect, with translation: CGPoint) -> CGFloat {
+    func getCurrentY(from rect: CGRect, with translation: CGPoint) -> CGFloat {
         let dy = translation.y - transOffsetY
         let y = rect.offsetBy(dx: 0.0, dy: dy).origin.y
 
@@ -406,7 +406,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         return max(topY - topBuffer, min(bottomY + bottomBuffer, y))
     }
 
-    private func startAnimation(to targetPosition: FloatingPanelPosition, at distance: CGFloat, with velocity: CGPoint) {
+    func startAnimation(to targetPosition: FloatingPanelPosition, at distance: CGFloat, with velocity: CGPoint) {
         let targetY = layoutAdapter.positionY(for: targetPosition)
         let velocityVector = (distance != 0) ? CGVector(dx: 0, dy: max(min(velocity.y/distance, 30.0), -30.0)) : .zero
         let animator = behavior.interactionAnimator(self.viewcontroller, to: targetPosition, with: velocityVector)
@@ -444,7 +444,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         unlockScrollView()
     }
 
-    private func distance(to targetPosition: FloatingPanelPosition, with translation: CGPoint) -> CGFloat {
+    func distance(to targetPosition: FloatingPanelPosition, with translation: CGPoint) -> CGFloat {
         let topY = layoutAdapter.topY
         let middleY = layoutAdapter.middleY
         let bottomY = layoutAdapter.bottomY
@@ -526,7 +526,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         return (initialVelocity / 1000.0) * decelerationRate / (1.0 - decelerationRate)
     }
 
-    private func targetPosition(with translation: CGPoint, velocity: CGPoint) -> (FloatingPanelPosition) {
+    func targetPosition(with translation: CGPoint, velocity: CGPoint) -> (FloatingPanelPosition) {
         let currentY = getCurrentY(from: initialFrame, with: translation)
         let supportedPositions: Set = layoutAdapter.layout.supportedPositions
 
