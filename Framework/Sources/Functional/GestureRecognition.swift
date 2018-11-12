@@ -96,7 +96,7 @@ struct PanGestureRecognition {
                 var frame = $1.initialFrame
                 frame.origin.y = currentY
                 $2.surfaceView.frame = frame
-                $2.backdropView.alpha = $2.getBackdropAlpha(with: translation)
+                $2.backdropView.alpha = $2.getBackdropAlpha(with: translation, layoutState: &$1)
                 
                 $2.viewcontroller.delegate?.floatingPanelDidMove($2.viewcontroller)
             }
@@ -116,10 +116,10 @@ struct PanGestureRecognition {
                 // Projecting the dragging to the scroll dragging or not
                 $2.stopDeceleration = ($3.surfaceView.frame.minY > $4.topY)
                 
-                let targetPosition = $3.targetPosition(with: translation, velocity: velocity)
-                let distance = $3.distance(to: targetPosition, with: translation)
+                let targetPosition = $3.targetPosition(with: translation, velocity: velocity, layoutState: &$1)
+                let distance = $3.distance(to: targetPosition, with: translation, layoutState: &$1)
                 
-                $3.endInteraction(for: targetPosition)
+                $3.endInteraction(for: targetPosition, layoutState: &$1)
                 
                 if $1.isRemovalInteractionEnabled, $1.isBottomState($4) {
                     if $3.startRemovalAnimation(with: translation, velocity: velocity, distance: distance) {
@@ -130,7 +130,7 @@ struct PanGestureRecognition {
                 $3.viewcontroller.delegate?.floatingPanelDidEndDragging($3.viewcontroller, withVelocity: velocity, targetPosition: targetPosition)
                 $3.viewcontroller.delegate?.floatingPanelWillBeginDecelerating($3.viewcontroller)
                 
-                $3.startAnimation(to: targetPosition, at: distance, with: velocity)
+                $3.startAnimation(to: targetPosition, at: distance, with: velocity, layoutState: &$1)
             }
         }
     }
