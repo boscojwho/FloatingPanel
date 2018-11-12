@@ -20,7 +20,6 @@ class GestureRecognition: NSObject {
     
     @objc func panGestureRecognizer(didUpdate: UIPanGestureRecognizer) {
         
-        
     }
 }
 
@@ -41,6 +40,9 @@ struct LayoutState {
     
     var interactionInProgress = false
     var isRemovalInteractionEnabled = false
+    
+    /// - Note: Originally named `translationOffsetY`.
+    var translationOffset: CGFloat = 0
 }
 
 struct ScrollViewState {
@@ -52,7 +54,7 @@ struct ScrollViewState {
 struct PanGestureRecognition {
     
     /// Call before switching into UIGestureRecognizer.state-specific update actions.
-    static var willUpdate: (UIPanGestureRecognizer, UIScrollView, inout LayoutState, FloatingPanel, AllowScrollViewGestureRecognition, inout ScrollViewState) -> () {
+    static var onUpdate: (UIPanGestureRecognizer, UIScrollView, inout LayoutState, FloatingPanel, AllowScrollViewGestureRecognition, inout ScrollViewState) -> () {
         get {
             return {
                 guard $4($1, $0, $2, $3) == false else {
@@ -63,7 +65,7 @@ struct PanGestureRecognition {
                 case .began:
                     onBegan($0)
                 case .changed:
-                    onChanged($0, $2, $3)
+                    onChanged($0, &$2, $3)
                 case .ended, .cancelled, .failed:
                     onEnded($0, &$2, &$5, $3, $3.layoutAdapter)
                 case .possible:
@@ -83,11 +85,13 @@ struct PanGestureRecognition {
         }
     }
     
-    static var onChanged: (UIPanGestureRecognizer, LayoutState, FloatingPanel) -> () {
+    static var onChanged: (UIPanGestureRecognizer, inout LayoutState, FloatingPanel) -> () {
         get {
             return {
                 let translation = $0.translation(in: $0.view!.superview)
-                let currentY = $2.getCurrentY(from: $1.initialFrame, with: translation)
+                let currentY = $2.currentOrigin(
+                    $1.initialFrame, translation, &$1, $2.layoutAdapter, $2.scrollView!, $2
+                )
                 
                 var frame = $1.initialFrame
                 frame.origin.y = currentY
@@ -136,7 +140,6 @@ struct PanGestureRecognition {
     static var shouldAllowScrollViewGestureRecognition: AllowScrollViewGestureRecognition {
         get {
             return {
-                
                 let location = $1.location(in: $1.view)
                 let velocity = $1.velocity(in: $1.view)
 
@@ -167,7 +170,6 @@ struct PanGestureRecognition {
                 }
                 
                 return false
-
             }
         }
     }
