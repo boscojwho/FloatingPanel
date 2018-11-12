@@ -157,23 +157,21 @@ class SearchPanelViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 20
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         if let cell = cell as? SearchCell {
-            switch indexPath.row {
+            switch indexPath.row % 2 {
             case 0:
                 cell.iconImageView.image = UIImage(named: "mark")
                 cell.titleLabel.text = "Marked Location"
                 cell.subTitleLabel.text = "Golden Gate Bridge, San Francisco"
-            case 1:
+            default:
                 cell.iconImageView.image = UIImage(named: "like")
                 cell.titleLabel.text = "Favorites"
                 cell.subTitleLabel.text = "0 Places"
-            default:
-                break
             }
         }
         return cell
