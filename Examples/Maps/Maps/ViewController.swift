@@ -7,7 +7,7 @@ import MapKit
 import FloatingPanel
 
 class ViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, FloatingPanelControllerDelegate {
-    var fpc: FloatingPanelController!
+    var fpc: FloatingPanelViewController!
     var searchVC: SearchPanelViewController!
 
     @IBOutlet weak var mapView: MKMapView!
@@ -16,7 +16,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, 
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Initialize FloatingPanelController
-        fpc = FloatingPanelController()
+        fpc = FloatingPanelViewController()
         fpc.delegate = self
 
         // Initialize FloatingPanelController and add the view
@@ -83,7 +83,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, 
 
     // MARK: FloatingPanelControllerDelegate
     
-    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+    func floatingPanel(_ vc: FloatingPanelViewController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
         switch newCollection.verticalSizeClass {
         case .compact:
             fpc.surfaceView.borderWidth = 1.0 / traitCollection.displayScale
@@ -96,7 +96,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, 
         }
     }
 
-    func floatingPanelDidMove(_ vc: FloatingPanelController) {
+    func floatingPanelDidMove(_ vc: FloatingPanelViewController) {
         let y = vc.surfaceView.frame.origin.y
         let tipY = vc.originYOfSurface(for: .tip)
         if y > tipY - 44.0 {
@@ -105,14 +105,14 @@ class ViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, 
         }
     }
 
-    func floatingPanelWillBeginDragging(_ vc: FloatingPanelController) {
+    func floatingPanelWillBeginDragging(_ vc: FloatingPanelViewController) {
         if vc.position == .full {
             searchVC.searchBar.showsCancelButton = false
             searchVC.searchBar.resignFirstResponder()
         }
     }
 
-    func floatingPanelDidEndDragging(_ vc: FloatingPanelController, withVelocity velocity: CGPoint, targetPosition: FloatingPanelPosition) {
+    func floatingPanelDidEndDragging(_ vc: FloatingPanelViewController, withVelocity velocity: CGPoint, targetPosition: FloatingPanelPosition) {
         if targetPosition != .full {
             searchVC.hideHeader()
         }

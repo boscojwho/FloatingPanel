@@ -14,7 +14,7 @@ class ViewController: UIViewController, FloatingPanelControllerDelegate {
     @IBOutlet weak var labelStackView: UIStackView!
     @IBOutlet weak var bottomToolView: UIView!
 
-    var fpc: FloatingPanelController!
+    var fpc: FloatingPanelViewController!
     var newsVC: NewsViewController!
 
     var initialColor: UIColor = .black
@@ -22,7 +22,7 @@ class ViewController: UIViewController, FloatingPanelControllerDelegate {
         super.viewDidLoad()
         initialColor = view.backgroundColor!
         // Initialize FloatingPanelController
-        fpc = FloatingPanelController()
+        fpc = FloatingPanelViewController()
         fpc.delegate = self
 
         // Initialize FloatingPanelController and add the view
@@ -64,15 +64,15 @@ class ViewController: UIViewController, FloatingPanelControllerDelegate {
 
     // MARK: FloatingPanelControllerDelegate
 
-    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+    func floatingPanel(_ vc: FloatingPanelViewController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
         return FloatingPanelStocksLayout()
     }
 
-    func floatingPanel(_ vc: FloatingPanelController, behaviorFor newCollection: UITraitCollection) -> FloatingPanelBehavior? {
+    func floatingPanel(_ vc: FloatingPanelViewController, behaviorFor newCollection: UITraitCollection) -> FloatingPanelBehavior? {
         return FloatingPanelStocksBehavior()
     }
 
-    func floatingPanelWillBeginDragging(_ vc: FloatingPanelController) {
+    func floatingPanelWillBeginDragging(_ vc: FloatingPanelViewController) {
         if vc.position == .full {
             // Dimiss top bar with dissolve animation
             UIView.animate(withDuration: 0.25) {
@@ -82,7 +82,7 @@ class ViewController: UIViewController, FloatingPanelControllerDelegate {
             }
         }
     }
-    func floatingPanelDidEndDragging(_ vc: FloatingPanelController, withVelocity velocity: CGPoint, targetPosition: FloatingPanelPosition) {
+    func floatingPanelDidEndDragging(_ vc: FloatingPanelViewController, withVelocity velocity: CGPoint, targetPosition: FloatingPanelPosition) {
         if targetPosition == .full {
             // Present top bar with dissolve animation
             UIView.animate(withDuration: 0.25) {
@@ -129,7 +129,7 @@ class FloatingPanelStocksBehavior: FloatingPanelBehavior {
         return 15.0
     }
 
-    func interactionAnimator(_ fpc: FloatingPanelController, to targetPosition: FloatingPanelPosition, with velocity: CGVector) -> UIViewPropertyAnimator {
+    func interactionAnimator(_ fpc: FloatingPanelViewController, to targetPosition: FloatingPanelPosition, with velocity: CGVector) -> UIViewPropertyAnimator {
         let timing = timeingCurve(to: targetPosition, with: velocity)
         return UIViewPropertyAnimator(duration: 0, timingParameters: timing)
     }

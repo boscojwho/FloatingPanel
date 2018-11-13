@@ -46,8 +46,8 @@ class SampleListViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
 
-    var mainPanelVC: FloatingPanelController!
-    var detailPanelVC: FloatingPanelController!
+    var mainPanelVC: FloatingPanelViewController!
+    var detailPanelVC: FloatingPanelViewController!
     var currentMenu: Menu = .trackingTableView
 
     override func viewDidLoad() {
@@ -62,7 +62,7 @@ class SampleListViewController: UIViewController, UITableViewDataSource, UITable
 
     func addMainPanel(with contentVC: UIViewController) {
         // Initialize FloatingPanelController
-        mainPanelVC = FloatingPanelController()
+        mainPanelVC = FloatingPanelViewController()
         mainPanelVC.delegate = self
         mainPanelVC.isRemovalInteractionEnabled = (currentMenu == .showRemovablePanel)
 
@@ -123,7 +123,7 @@ class SampleListViewController: UIViewController, UITableViewDataSource, UITable
             detailPanelVC?.removeFromParent()
 
             // Initialize FloatingPanelController
-            detailPanelVC = FloatingPanelController()
+            detailPanelVC = FloatingPanelViewController()
 
             // Initialize FloatingPanelController and add the view
             detailPanelVC.surfaceView.cornerRadius = 6.0
@@ -145,7 +145,7 @@ class SampleListViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
 
-    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+    func floatingPanel(_ vc: FloatingPanelViewController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
         if currentMenu == .showRemovablePanel {
             return newCollection.verticalSizeClass == .compact ? RemovablePanelLandscapeLayout() :  RemovablePanelLayout()
         } else {
@@ -235,7 +235,7 @@ class DebugTextViewController: UIViewController, UITextViewDelegate {
     @IBAction func close(sender: UIButton) {
         // Now impossible
         // dismiss(animated: true, completion: nil)
-        (self.parent as? FloatingPanelController)?.removePanelFromParent(animated: true, completion: nil)
+        (self.parent as? FloatingPanelViewController)?.removePanelFromParent(animated: true, completion: nil)
     }
 }
 
@@ -282,7 +282,7 @@ class DebugTableViewController: UIViewController, UITableViewDataSource, UITable
 
     @objc func close(sender: UIButton) {
         //  Remove FloatingPanel from a view
-        (self.parent as! FloatingPanelController).removePanelFromParent(animated: true, completion: nil)
+        (self.parent as! FloatingPanelViewController).removePanelFromParent(animated: true, completion: nil)
     }
 
     override func viewWillLayoutSubviews() {
@@ -349,7 +349,7 @@ class DetailViewController: UIViewController {
     @IBAction func close(sender: UIButton) {
         // Now impossible
         // dismiss(animated: true, completion: nil)
-        (self.parent as? FloatingPanelController)?.removePanelFromParent(animated: true, completion: nil)
+        (self.parent as? FloatingPanelViewController)?.removePanelFromParent(animated: true, completion: nil)
     }
 
     @IBAction func buttonPressed(_ sender: UIButton) {
@@ -375,13 +375,13 @@ class DetailViewController: UIViewController {
 }
 
 class ModalViewController: UIViewController {
-    var fpc: FloatingPanelController!
+    var fpc: FloatingPanelViewController!
     var consoleVC: DebugTextViewController!
     @IBOutlet weak var safeAreaView: UIView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Initialize FloatingPanelController
-        fpc = FloatingPanelController()
+        fpc = FloatingPanelViewController()
 
         // Initialize FloatingPanelController and add the view
         fpc.surfaceView.cornerRadius = 6.0
@@ -422,13 +422,13 @@ class ModalViewController: UIViewController {
 class TabBarViewController: UITabBarController {}
 
 class TabBarContentViewController: UIViewController, FloatingPanelControllerDelegate {
-    var fpc: FloatingPanelController!
+    var fpc: FloatingPanelViewController!
     var consoleVC: DebugTextViewController!
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Initialize FloatingPanelController
-        fpc = FloatingPanelController()
+        fpc = FloatingPanelViewController()
         fpc.delegate = self
 
         // Initialize FloatingPanelController and add the view
@@ -451,7 +451,7 @@ class TabBarContentViewController: UIViewController, FloatingPanelControllerDele
         fpc.removePanelFromParent(animated: false)
     }
 
-    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+    func floatingPanel(_ vc: FloatingPanelViewController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
         switch self.tabBarItem.tag {
         case 0:
             return OneTabBarPanelLayout()

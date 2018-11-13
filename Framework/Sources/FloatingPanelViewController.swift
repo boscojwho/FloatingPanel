@@ -8,7 +8,7 @@ import UIKit
 ///
 /// A container view controller to display a floating panel to present contents in parallel as a user wants.
 ///
-public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+public class FloatingPanelViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
 
     /// Constants indicating how safe area insets are added to the adjusted content inset.
     public enum ContentInsetAdjustmentBehavior: Int {

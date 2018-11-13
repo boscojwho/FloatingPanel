@@ -7,7 +7,7 @@ import UIKit
 ///
 /// FloatingPanel presentation model
 ///
-class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+class FloatingPanel: NSObject {
     /* Cause 'terminating with uncaught exception of type NSException' error on Swift Playground
      unowned let view: UIView
      */
@@ -30,7 +30,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         set { layoutAdapter.safeAreaInsets = newValue }
     }
 
-    unowned let viewcontroller: FloatingPanelController
+    unowned let viewcontroller: FloatingPanelViewController
 
     let panGesture: FloatingPanelPanGestureRecognizer
     
@@ -56,7 +56,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
 
     // MARK: - Interface
 
-    init(_ vc: FloatingPanelController, layout: FloatingPanelLayout, behavior: FloatingPanelBehavior) {
+    init(_ vc: FloatingPanelViewController, layout: FloatingPanelLayout, behavior: FloatingPanelBehavior) {
         viewcontroller = vc
         surfaceView = vc.view as! FloatingPanelSurfaceView
         backdropView = FloatingPanelBackdropView()
@@ -165,46 +165,6 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
             return preAlpha
         } else {
             return preAlpha + max(min(1.0, 1.0 - (nextY - currentY) / (nextY - preY) ), 0.0) * (nextAlpha - preAlpha)
-        }
-    }
-
-    // MARK: - UIGestureRecognizerDelegate
-
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard gestureRecognizer == panGesture else { return false }
-
-        log.debug("shouldRecognizeSimultaneouslyWith", otherGestureRecognizer)
-
-        return otherGestureRecognizer == scrollView?.panGestureRecognizer
-    }
-
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard gestureRecognizer == panGesture else { return false }
-
-        // Do not begin any gestures excluding the tracking scrollView's pan gesture until the pan gesture fails
-        if otherGestureRecognizer == scrollView?.panGestureRecognizer {
-            return false
-        } else {
-            return true
-        }
-    }
-
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard gestureRecognizer == panGesture else { return false }
-
-        // Do not begin the pan gesture until any other gestures fail except fo the tracking scrollView's pan gesture.
-        switch otherGestureRecognizer {
-        case scrollView?.panGestureRecognizer:
-            return false
-        case is UIPanGestureRecognizer,
-             is UISwipeGestureRecognizer,
-             is UIRotationGestureRecognizer,
-             is UIScreenEdgePanGestureRecognizer,
-             is UIPinchGestureRecognizer:
-            return true
-        default:
-            return false
         }
     }
 
@@ -548,28 +508,36 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         }
     }
 
-    // MARK: - ScrollView handling
+    
+}
 
+// MARK: - UIScrollView Handling
+
+extension FloatingPanel {
+    
     func lockScrollView() {
         guard let scrollView = scrollView else { return }
-
+        
         scrollView.isDirectionalLockEnabled = true
         scrollView.showsVerticalScrollIndicator = false
     }
-
+    
     func unlockScrollView() {
         guard let scrollView = scrollView else { return }
-
+        
         scrollView.isDirectionalLockEnabled = false
         scrollView.showsVerticalScrollIndicator = scrollViewState.scrollIndicatorsVisible
     }
+}
 
+// MARK: - Selector Forwarding
 
-    // MARK: - UIScrollViewDelegate Intermediation
+extension FloatingPanel {
+    
     override func responds(to aSelector: Selector!) -> Bool {
         return super.responds(to: aSelector) || userScrollViewDelegate?.responds(to: aSelector) == true
     }
-
+    
     override func forwardingTarget(for aSelector: Selector!) -> Any? {
         if userScrollViewDelegate?.responds(to: aSelector) == true {
             return userScrollViewDelegate
@@ -577,14 +545,62 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
             return super.forwardingTarget(for: aSelector)
         }
     }
+}
 
+// MARK: - UIGestureRecognizerDelegate
+
+extension FloatingPanel: UIGestureRecognizerDelegate {
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == panGesture else { return false }
+        
+        log.debug("shouldRecognizeSimultaneouslyWith", otherGestureRecognizer)
+        
+        return otherGestureRecognizer == scrollView?.panGestureRecognizer
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == panGesture else { return false }
+        
+        // Do not begin any gestures excluding the tracking scrollView's pan gesture until the pan gesture fails
+        if otherGestureRecognizer == scrollView?.panGestureRecognizer {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == panGesture else { return false }
+        
+        // Do not begin the pan gesture until any other gestures fail except fo the tracking scrollView's pan gesture.
+        switch otherGestureRecognizer {
+        case scrollView?.panGestureRecognizer:
+            return false
+        case is UIPanGestureRecognizer,
+             is UISwipeGestureRecognizer,
+             is UIRotationGestureRecognizer,
+             is UIScreenEdgePanGestureRecognizer,
+             is UIPinchGestureRecognizer:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension FloatingPanel: UIScrollViewDelegate {
+    
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         if layoutState.state != .full {
             layoutState.initialScrollOffset = scrollView.contentOffset
         }
         userScrollViewDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
-
+    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if scrollViewState.stopDeceleration {
             targetContentOffset.pointee = scrollView.contentOffset
