@@ -150,7 +150,7 @@ class FloatingPanel: NSObject {
     
     func getBackdropAlpha(with translation: CGPoint, layoutState: inout LayoutState) -> CGFloat {
         let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
+            layoutState.initialFrame, translation, layoutState, layoutAdapter, scrollView!, self
         )
         
         let next = directionalPosition(with: translation, layoutState: &layoutState)
@@ -195,7 +195,7 @@ class FloatingPanel: NSObject {
     func startRemovalAnimation(with translation: CGPoint, velocity: CGPoint, distance: CGFloat) -> Bool {
         let posY = layoutAdapter.positionY(for: layoutState.state)
         let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
+            layoutState.initialFrame, translation, layoutState, layoutAdapter, scrollView!, self
         )
         let safeAreaBottomY = layoutAdapter.safeAreaBottomY
         let vth = behavior.removalVelocity
@@ -242,7 +242,7 @@ class FloatingPanel: NSObject {
         layoutState.interactionInProgress = false
     }
 
-    var currentOrigin: (CGRect, CGPoint, inout LayoutState, FloatingPanelLayoutAdapter, UIScrollView, FloatingPanel) -> CGFloat {
+    var currentOrigin: (CGRect, CGPoint, LayoutState, FloatingPanelLayoutAdapter, UIScrollView, FloatingPanel) -> CGFloat {
         get {
             return {
                 let dy = $1.y - $2.translationOffset
@@ -308,7 +308,7 @@ class FloatingPanel: NSObject {
         let middleY = layoutAdapter.middleY
         let bottomY = layoutAdapter.bottomY
         let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
+            layoutState.initialFrame, translation, layoutState, layoutAdapter, scrollView!, self
         )
         switch targetPosition {
         case .full:
@@ -322,7 +322,7 @@ class FloatingPanel: NSObject {
 
     private func directionalPosition(with translation: CGPoint, layoutState: inout LayoutState) -> FloatingPanelPosition {
         let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
+            layoutState.initialFrame, translation, layoutState, layoutAdapter, scrollView!, self
         )
         
         let supportedPositions: Set = layoutAdapter.layout.supportedPositions
@@ -357,7 +357,7 @@ class FloatingPanel: NSObject {
 
     private func redirectionalPosition(with translation: CGPoint, layoutState: inout LayoutState) -> FloatingPanelPosition {
         let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
+            layoutState.initialFrame, translation, layoutState, layoutAdapter, scrollView!, self
         )
 
         let supportedPositions: Set = layoutAdapter.layout.supportedPositions
@@ -393,7 +393,7 @@ class FloatingPanel: NSObject {
 
     func targetPosition(with translation: CGPoint, velocity: CGPoint, layoutState: inout LayoutState) -> (FloatingPanelPosition) {
         let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
+            layoutState.initialFrame, translation, layoutState, layoutAdapter, scrollView!, self
         )
         let supportedPositions: Set = layoutAdapter.layout.supportedPositions
 

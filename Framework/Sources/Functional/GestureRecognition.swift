@@ -93,7 +93,7 @@ struct PanGestureRecognition {
                 
                 let translation = $0.translation(in: $0.view!.superview)
                 let currentY = $2.currentOrigin(
-                    $1.initialFrame, translation, &$1, $2.layoutAdapter, $2.scrollView!, $2
+                    $1.initialFrame, translation, $1, $2.layoutAdapter, $2.scrollView!, $2
                 )
                 
                 var frame = $1.initialFrame
