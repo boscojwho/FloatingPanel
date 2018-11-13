@@ -81,6 +81,7 @@ struct PanGestureRecognition {
                 // A user interaction does not always start from Began state of the pan gesture
                 // because it can be recognized in scrolling a content in a content view controller.
                 // So do nothing here.
+                log.debug("panningBegan")
             }
         }
     }
@@ -88,6 +89,8 @@ struct PanGestureRecognition {
     static var onChanged: (UIPanGestureRecognizer, inout LayoutState, FloatingPanel) -> () {
         get {
             return {
+                log.debug("panningChange")
+                
                 let translation = $0.translation(in: $0.view!.superview)
                 let currentY = $2.currentOrigin(
                     $1.initialFrame, translation, &$1, $2.layoutAdapter, $2.scrollView!, $2
@@ -106,6 +109,8 @@ struct PanGestureRecognition {
     static var onEnded: (UIPanGestureRecognizer, inout LayoutState, inout ScrollViewState, FloatingPanel, FloatingPanelLayoutAdapter) -> () {
         get {
             return {
+                log.debug("panningEnd")
+                
                 let translation = $0.translation(in: $0.view!.superview)
                 let velocity = $0.velocity(in: $0.view)
                 

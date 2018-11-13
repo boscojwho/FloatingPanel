@@ -22,6 +22,7 @@
 		5A4A67ED2198C3B200E8C661 /* GestureRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4A67EC2198C3B200E8C661 /* GestureRecognition.swift */; };
 		5AB100B9219A573D001049DB /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB100B8219A573D001049DB /* FloatingPanelControllerDelegate.swift */; };
 		5AB100BB219A589F001049DB /* FloatingPanelPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB100BA219A589F001049DB /* FloatingPanelPosition.swift */; };
+		5AB100BD219A598A001049DB /* FloatingPanelPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB100BC219A598A001049DB /* FloatingPanelPanGestureRecognizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		5A4A67EC2198C3B200E8C661 /* GestureRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognition.swift; sourceTree = "<group>"; };
 		5AB100B8219A573D001049DB /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
 		5AB100BA219A589F001049DB /* FloatingPanelPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelPosition.swift; sourceTree = "<group>"; };
+		5AB100BC219A598A001049DB /* FloatingPanelPanGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelPanGestureRecognizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				5450EEE321646DF500135936 /* FloatingPanelBehavior.swift */,
 				54CDC5D2215B6D5A007D205C /* FloatingPanelSurfaceView.swift */,
 				54CDC5D4215B6D8D007D205C /* FloatingPanelBackdropView.swift */,
+				5AB100BC219A598A001049DB /* FloatingPanelPanGestureRecognizer.swift */,
 				545DBA2A2152383100CA77B8 /* GrabberHandleView.swift */,
 				545DB9DD215118C800CA77B8 /* UIExtensions.swift */,
 				54ABD7AE216CCFF7002E6C13 /* Logger.swift */,
@@ -246,6 +249,7 @@
 				54CDC5D5215B6D8D007D205C /* FloatingPanelBackdropView.swift in Sources */,
 				54CFBFC5215CD09C006B5735 /* FloatingPanel.swift in Sources */,
 				54ABD7AF216CCFF7002E6C13 /* Logger.swift in Sources */,
+				5AB100BD219A598A001049DB /* FloatingPanelPanGestureRecognizer.swift in Sources */,
 				545DB9E021511AC100CA77B8 /* FloatingPanelController.swift in Sources */,
 				5450EEE421646DF500135936 /* FloatingPanelBehavior.swift in Sources */,
 				545DBA2B2152383100CA77B8 /* GrabberHandleView.swift in Sources */,

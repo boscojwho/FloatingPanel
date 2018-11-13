@@ -232,84 +232,6 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         }
     }
 
-    private func shouldScrollViewHandleTouch(_ scrollView: UIScrollView?, point: CGPoint, velocity: CGPoint) -> Bool {
-        let grabberBarFrame = CGRect(x: surfaceView.bounds.origin.x,
-                                     y: surfaceView.bounds.origin.y,
-                                     width: surfaceView.bounds.width,
-                                     height: FloatingPanelSurfaceView.topGrabberBarHeight * 2)
-
-        guard
-            let scrollView = scrollView,      // When no scrollView, nothing to handle.
-            layoutState.state == .full,                   // When not .full, don't scroll.
-            layoutState.interactionInProgress == false,   // When interaction already in progress, don't scroll.
-            scrollView.frame.contains(point), // When point not in scrollView, don't scroll.
-            !grabberBarFrame.contains(point)  // When point within grabber area, don't scroll.
-        else {
-            return false
-        }
-
-        log.debug("ScrollView.contentOffset >>>", scrollView.contentOffset.y)
-
-        if scrollView.contentOffset.y - scrollView.contentOffsetZero.y != 0 {
-            return true
-        }
-        if scrollView.isDecelerating {
-            return true
-        }
-        if velocity.y < 0 {
-            return true
-        }
-
-        return false
-    }
-
-    private func panningBegan() {
-        // A user interaction does not always start from Began state of the pan gesture
-        // because it can be recognized in scrolling a content in a content view controller.
-        // So do nothing here.
-        log.debug("panningBegan")
-    }
-
-    private func panningChange(with translation: CGPoint) {
-        log.debug("panningChange")
-
-        let currentY = currentOrigin(
-            layoutState.initialFrame, translation, &layoutState, layoutAdapter, scrollView!, self
-        )
-
-        var frame = layoutState.initialFrame
-        frame.origin.y = currentY
-        surfaceView.frame = frame
-        backdropView.alpha = getBackdropAlpha(with: translation, layoutState: &layoutState)
-
-        viewcontroller.delegate?.floatingPanelDidMove(viewcontroller)
-    }
-
-    private func panningEnd(with translation: CGPoint, velocity: CGPoint, layoutState: inout LayoutState) {
-        log.debug("panningEnd")
-        if layoutState.interactionInProgress == false {
-            layoutState.initialFrame = surfaceView.frame
-        }
-
-        scrollViewState.stopDeceleration = (surfaceView.frame.minY > layoutAdapter.topY) // Projecting the dragging to the scroll dragging or not
-
-        let targetPosition = self.targetPosition(with: translation, velocity: velocity, layoutState: &layoutState)
-        let distance = self.distance(to: targetPosition, with: translation, layoutState: &layoutState)
-
-        endInteraction(for: targetPosition, layoutState: &layoutState)
-
-        if layoutState.isRemovalInteractionEnabled, layoutState.isBottomState(layoutAdapter) {
-            if startRemovalAnimation(with: translation, velocity: velocity, distance: distance) {
-                return
-            }
-        }
-
-        viewcontroller.delegate?.floatingPanelDidEndDragging(viewcontroller, withVelocity: velocity, targetPosition: targetPosition)
-        viewcontroller.delegate?.floatingPanelWillBeginDecelerating(viewcontroller)
-
-        startAnimation(to: targetPosition, at: distance, with: velocity, layoutState: &layoutState)
-    }
-
     func startRemovalAnimation(with translation: CGPoint, velocity: CGPoint, distance: CGFloat) -> Bool {
         let posY = layoutAdapter.positionY(for: layoutState.state)
         let currentY = currentOrigin(
@@ -669,24 +591,6 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
             scrollViewState.stopDeceleration = false
         } else {
             userScrollViewDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
-        }
-    }
-}
-
-class FloatingPanelPanGestureRecognizer: UIPanGestureRecognizer {
-    override weak var delegate: UIGestureRecognizerDelegate? {
-        get {
-            return super.delegate
-        }
-        set {
-            guard newValue is FloatingPanel else {
-                let exception = NSException(name: .invalidArgumentException,
-                                            reason: "FloatingPanelController's built-in pan gesture recognizer must have its controller as its delegate.",
-                                            userInfo: nil)
-                exception.raise()
-                return
-            }
-            super.delegate = newValue
         }
     }
 }
