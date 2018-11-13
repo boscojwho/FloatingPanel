@@ -5,12 +5,6 @@
 
 import UIKit
 
-public enum FloatingPanelPosition: Int, CaseIterable {
-    case full
-    case half
-    case tip
-}
-
 ///
 /// A container view controller to display a floating panel to present contents in parallel as a user wants.
 ///

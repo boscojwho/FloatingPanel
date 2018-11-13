@@ -21,6 +21,7 @@
 		54CFBFC5215CD09C006B5735 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CFBFC4215CD09C006B5735 /* FloatingPanel.swift */; };
 		5A4A67ED2198C3B200E8C661 /* GestureRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4A67EC2198C3B200E8C661 /* GestureRecognition.swift */; };
 		5AB100B9219A573D001049DB /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB100B8219A573D001049DB /* FloatingPanelControllerDelegate.swift */; };
+		5AB100BB219A589F001049DB /* FloatingPanelPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB100BA219A589F001049DB /* FloatingPanelPosition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		54CFBFC4215CD09C006B5735 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 		5A4A67EC2198C3B200E8C661 /* GestureRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognition.swift; sourceTree = "<group>"; };
 		5AB100B8219A573D001049DB /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
+		5AB100BA219A589F001049DB /* FloatingPanelPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelPosition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				545DB9DF21511AC100CA77B8 /* FloatingPanelController.swift */,
 				5AB100B8219A573D001049DB /* FloatingPanelControllerDelegate.swift */,
 				54CFBFC4215CD09C006B5735 /* FloatingPanel.swift */,
+				5AB100BA219A589F001049DB /* FloatingPanelPosition.swift */,
 				54CFBFC2215CD045006B5735 /* FloatingPanelLayout.swift */,
 				5450EEE321646DF500135936 /* FloatingPanelBehavior.swift */,
 				54CDC5D2215B6D5A007D205C /* FloatingPanelSurfaceView.swift */,
@@ -239,6 +242,7 @@
 				5AB100B9219A573D001049DB /* FloatingPanelControllerDelegate.swift in Sources */,
 				54CDC5D3215B6D5A007D205C /* FloatingPanelSurfaceView.swift in Sources */,
 				54CFBFC3215CD045006B5735 /* FloatingPanelLayout.swift in Sources */,
+				5AB100BB219A589F001049DB /* FloatingPanelPosition.swift in Sources */,
 				54CDC5D5215B6D8D007D205C /* FloatingPanelBackdropView.swift in Sources */,
 				54CFBFC5215CD09C006B5735 /* FloatingPanel.swift in Sources */,
 				54ABD7AF216CCFF7002E6C13 /* Logger.swift in Sources */,
